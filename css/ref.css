@@ -1,0 +1,67 @@
+.list-badges{
+	float: right;
+}
+.mui-page {
+	display: none;
+}
+.mui-pages {
+	display: block;
+}
+.title{
+	margin: 20px 15px 7px;
+	color: #6d6d72;
+	font-size: 15px;
+}
+.ui-alert {
+	text-align: center;
+	padding: 20px 10px;
+	font-size: 16px;
+}
+#menu{
+	width: 55%;
+}
+#modify{
+	padding-top: 20px;
+}
+#catelist{
+	padding-top: 45px;
+}
+.describe{
+	color: #FFF;
+	text-align: center;
+	padding: 5%;
+}
+.sub-title{
+	font-size: 80%;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+#showUserPicker{
+	min-width: 20px;
+	text-align: center;
+}
+.logo{
+	width: 60%;
+	height: 60%;
+	padding: 10px;
+	padding-top: 25%;
+	color: #FFF;
+}
+.footer{
+	position: relative;
+	bottom: 0%;
+	padding: 15px;
+	padding-left: 25px;
+	padding-top: 30px;
+}
+.mui-about{
+	display: inline-block;
+}
+#about{
+	height:100%;
+	vertical-align: middle;
+}
+.about-des{
+	padding: 10px;
+	text-align: center;
+}
