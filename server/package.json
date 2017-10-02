@@ -1,0 +1,20 @@
+{
+  "name": "web-app",
+  "main": "./lib/main.js",
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.15.4",
+    "mangodb": "^1.0.0"
+  },
+  "version": "1.0.0",
+  "description": "ai-home",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ai-home"
+  ],
+  "author": "sleeperwood",
+  "license": "MIT"
+}

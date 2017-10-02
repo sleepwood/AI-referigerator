@@ -5,12 +5,12 @@
 		(function($, doc){
 			$.ready(function(){
 				//设置菜单和内容滚动
-				$('#offCanvasSideScroll').scroll();  
-				$('#items').scroll();  
-				
+				$('#offCanvasSideScroll').scroll();
+				$('#items').scroll();
+
 				$.ajax({
 				 	type:"get",
-				 	url:"cargo.json",
+				 	url:"http://127.0.0.1:3000/init",
 				 	async:true,
 				 	dataType:"json",
 				 	success:function(res){
@@ -72,7 +72,7 @@
 				 },100);
 			});
 			$.init();
-			
+
 			//阻止手势侧滑
 			var offCanvasWrapper = mui('.mui-off-canvas-wrap');
 			var offCanvasInner = offCanvasWrapper[0].querySelector('.mui-inner-wrap');
@@ -80,7 +80,7 @@
     				event.stopPropagation();
 			});
 		})(mui,document);
-		
+
 		(function($) {
 			//导航栏按钮控制侧滑菜单
 			$('body').on('tap','.mui-icon-bars',function(event){
@@ -91,17 +91,17 @@
 					$('.mui-off-canvas-wrap').offCanvas('show');
 				}
 			});
-			
+
 			//导航栏开启关于菜单
 			$('#menu').on('tap','.menu-about',function(event){
 				var items = document.getElementById('index');
 				items.className = 'mui-off-canvas-wrap mui-draggable mui-page';
 				var about = document.getElementById('about');
 				about.className = 'mui-about';
-				
+
 				mui('.mui-off-canvas-wrap').offCanvas().close();
 			});
-			
+
 			//导航栏关闭关于菜单
 			$('#about').on('tap','.about-btn',function(event){
 				var items = document.getElementById('index');
@@ -109,7 +109,7 @@
 				var about = document.getElementById('about');
 				about.className = 'mui-page';
 			});
-			
+
 			//添加新的项目
 			$('#menu').on('tap', '.create-item', function(event) {
 				/* 开启修改页面 */
@@ -122,7 +122,7 @@
 
 				mui('.mui-off-canvas-wrap').offCanvas().close();
 			});
-			
+
 			var selectCate = null; //当前项目的类别
 			//修改已有项目信息
 			$('.lists').on('tap', '.item-modify', function(event) {
@@ -144,7 +144,7 @@
 				selectCate = selectItem.parentNode.parentNode.firstElementChild.innerHTML;
 				showUserPickerButton.innerHTML = selectCate;
 			});
-			
+
 			//项目编辑页面——提交操作
 			$('#modify').on('tap', '.modify-load', function(event) {
 				var name = document.getElementById('modify-name');
@@ -170,7 +170,7 @@
 								low  = i;
 							}
 						}
-						
+
 						var items = mui('.item');
 						var item = items[low];
 
@@ -180,6 +180,7 @@
 							'<a class="mui-btn mui-btn-red item-delete">删除</a><a href="#modify" class="mui-btn mui-btn-blue item-modify">修改</a>' +
 							'</div><span class="mui-badge mui-badge-primary">' + num.value.trim() + '</span>';
 						item.lastElementChild.appendChild(li);
+
 					}
 					//导入数据文件
 					var j =0;
@@ -190,7 +191,7 @@
 							break;
 						}
 					}
-					
+
 					var i =0;
 					for(;i<category.length;i++){
 						if(category[i].text == selectCate){
@@ -207,10 +208,24 @@
 					else{
 						data.items[i][j].name = name.value.trim();
 						data.items[i][j].quantity = num.value.trim();
-						
+
 						console.log(data.items[i]);
 					}
-				} 
+					mui.ajax({
+						type:"get",
+						url:"http://127.0.0.1:3000/modify",
+						data:{
+							"category":cate.innerHTML,
+							"name": name.value.trim(),
+							"quantity": num.value.trim()
+						},
+						async:true,
+						dataType:"json",
+						success:function(res){
+							console.log(res);
+							}
+						})
+				}
 				//没有从编辑页面进入则进行添加操作
 				else {
 					var low = 0;
@@ -219,7 +234,7 @@
 							low  = i;
 						}
 					}
-						
+
 					var items = mui('.item');
 					var item = items[low];
 					var li = document.createElement('li'); //在列表下新建一个项目
@@ -242,7 +257,7 @@
 				var modifys = document.getElementById('modify');
 				modifys.className = 'mui-page';
 			});
-			
+
 			//项目编辑页面——取消操作
 			$('#modify').on('tap', '.modify-cancel', function(event) {
 				/* 关闭修改界面 */
@@ -251,7 +266,7 @@
 				var modifys = document.getElementById('modify');
 				modifys.className = 'mui-page';
 			});
-			
+
 			//删除已有项目信息；
 			$('.lists').on('tap', '.item-delete', function(event) {
 				var elem = this;
@@ -269,7 +284,7 @@
 						cate = j;
 					}
 				}
-				
+
 				mui.confirm('确认删除该条记录？', 'AI-HOME', btnArray, function(e) {
 					if(e.index == 0) {
 						li.parentNode.removeChild(li);
@@ -283,7 +298,7 @@
 					}
 				});
 			});
-			
+
 			//点击减少数量
 			$('body').on('tap', '.item-num', function(event) {
 				var elem = this;
@@ -291,7 +306,7 @@
 				var item = null;
 				var cate = null;
 				var items = document.getElementsByClassName('item');
-				
+
 				for(var i = 0;i<elem.parentNode.parentNode.children.length;i++){
 					if(elem.parentNode.firstElementChild.innerHTML == elem.parentNode.parentNode.children[i].firstElementChild.innerHTML){
 						item = i;
@@ -316,17 +331,17 @@
 					data.items[cate].splice(item,1);
 				}
 			});
-			
+
 			//管理已有类别
 			$('#menu').on('tap','.cate-manage',function(){
 				var manage = document.getElementById('manage');
 				manage.className = 'mui-pages';
 				var items = document.getElementById('index');
 				items.className = 'mui-off-canvas-wrap mui-draggable mui-page';
-				
+
 				$('.mui-off-canvas-wrap').offCanvas().close();
 			});
-			
+
 			//添加新的类别
 			$('#manage').on('tap','.create-category',function(event){
 				mui.prompt('输入新类别的名称','请输入名称','AI-HOME',btnArray,function(e){
@@ -354,7 +369,7 @@
 					}
 				});
 			});
-			
+
 			//删除类别及物品
 			$('#catelist').on('tap', '.cate-delete', function(event) {
 				var elem = this;
@@ -362,7 +377,7 @@
 				console.log(elem.parentNode);
 				var index = elem.parentNode.parentNode.firstElementChild.getAttribute("value");
 				console.log(index);
-				
+
 				mui.confirm('确认删除该条记录？', 'AI-HOME', btnArray, function(e) {
 					if(e.index == 0) {
 						manage.removeChild(elem.parentNode.parentNode);
@@ -377,7 +392,7 @@
 					}
 				});
 			});
-			
+
 			//修改类别名称
 			$('#catelist').on('tap','.cate-modify',function(event){
 				var elem = this;
@@ -406,7 +421,7 @@
 					$.swipeoutClose(elem.parentNode.parentNode);
 				});
 			});
-			
+
 			//管理页面返回
 			$('#manage').on('tap', '.cate-cancel', function(event) {
 				/* 关闭修改界面 */
@@ -414,13 +429,13 @@
 				items.className = 'mui-off-canvas-wrap mui-draggable';
 				var manage = document.getElementById('manage');
 				manage.className = 'mui-page';
-				
+
 				refresh();
 			});
 			var btnArray = ['确认', '取消'];
 			var selectItem = null;
 		})(mui);
-		
+
 	//修改完分类之后对主页面进行更新
 	function refresh(){
 		var itenum = document.getElementsByClassName('item').length;//获取类别长度
