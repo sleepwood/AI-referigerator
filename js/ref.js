@@ -69,7 +69,7 @@
 							'</div>';
 						manage.appendChild(li);
 					}
-				 },100);
+				},100);
 			});
 			$.init();
 
@@ -213,7 +213,7 @@
 					}
 					mui.ajax({
 						type:"get",
-						url:"http://127.0.0.1:3000/modify",
+						url:"http://127.0.0.1:3000/item/modify",
 						data:{
 							"category":cate.innerHTML,
 							"name": name.value.trim(),
@@ -246,6 +246,21 @@
 					var temp = {name:name.value.trim(),quantity:num.value.trim()};
 					data.items[low].push(temp);
 					console.log(data.items[low]);
+
+					mui.ajax({
+						type:"get",
+						url:"http://127.0.0.1:3000/item/create",
+						data:{
+							"category":cate.innerHTML,
+							"name": name.value.trim(),
+							"quantity": num.value.trim()
+						},
+						async:true,
+						dataType:"json",
+						success:function(res){
+							console.log(res);
+							}
+						})
 				}
 				/* 初始化参数 */
 				selectItem = null;
@@ -289,7 +304,19 @@
 					if(e.index == 0) {
 						li.parentNode.removeChild(li);
 						data.items[cate].splice(item,1);
-						console.log(data.items);
+
+						mui.ajax({
+							type:"get",
+							url:"http://127.0.0.1:3000/item/delete",
+							data:{
+								"name": li.firstElementChild.innerHTML,
+							},
+							async:true,
+							dataType:"json",
+							success:function(res){
+								console.log(res);
+								}
+							})
 					}
 					else {
 						setTimeout(function() {
@@ -297,6 +324,7 @@
 						}, 0);
 					}
 				});
+
 			});
 
 			//点击减少数量
@@ -319,7 +347,6 @@
 				}
 				if(count != 0) {
 					elem.innerHTML = --count;
-
 					data.items[cate][item].quantity = count;
 				}
 				if(count == 0) {
@@ -330,6 +357,19 @@
 					elem.parentNode.parentNode.removeChild(elem.parentNode);
 					data.items[cate].splice(item,1);
 				}
+
+				mui.ajax({
+					type:"get",
+					url:"http://127.0.0.1:3000/item/number",
+					data:{
+						"name": elem.parentNode.firstElementChild.innerHTML,
+					},
+					async:true,
+					dataType:"json",
+					success:function(res){
+						console.log(res);
+						}
+					})
 			});
 
 			//管理已有类别
@@ -358,7 +398,19 @@
 							category.push(temp);
 							userPicker.setData(category);
 							//预留上传接口
-							console.log(data.category);
+
+							mui.ajax({
+								type:"get",
+								url:"http://127.0.0.1:3000/category/create",
+								data:{
+									"name": e.value.trim(),
+								},
+								async:true,
+								dataType:"json",
+								success:function(res){
+									console.log(res);
+									}
+								})
 						}
 						else{
 							mui.toast("请输入有效数据！",{
@@ -385,6 +437,19 @@
 						data.items.splice(index,1);
 						var item = document.getElementsByClassName('item');
 						item[index].parentNode.removeChild(item[index]);
+
+						mui.ajax({
+							type:"get",
+							url:"http://127.0.0.1:3000/category/delete",
+							data:{
+								"tag":index,
+							},
+							async:true,
+							dataType:"json",
+							success:function(res){
+								console.log(res);
+								}
+							})
 					} else {
 						setTimeout(function() {
 							$.swipeoutClose(elem.parentNode.parentNode);
@@ -409,7 +474,20 @@
 							}
 						}
 						data.category[tag].text = e.value.trim();
-						console.log(data.category);
+
+						mui.ajax({
+							type:"get",
+							url:"http://127.0.0.1:3000/category/modify",
+							data:{
+								"tag":tag,
+								"name": e.value.trim()
+							},
+							async:true,
+							dataType:"json",
+							success:function(res){
+								console.log(res);
+								}
+							})
 					}
 					else{
 						mui.toast("请输入有效数据！",{
@@ -472,22 +550,3 @@
 		}
 		console.log(data.category);
 	}
-
-//上传数据
-//	function upload(){
-//		mui.ajax('test.json',{
-//			data:{
-//				category:data.category,
-//				items:data.items,
-//			},
-//			dataType:'json',//服务器返回json格式数据
-//			type:'get',//HTTP请求类型
-//			timeout:10000,//超时时间设置为10秒；
-//			success:function(data){
-//				console.log(data);
-//			},
-//			error:function(xhr,type,errorThrown){
-//				alert("上传出错! "+errorThrown+":"+type,"AI-HOME");
-//			}
-//		});
-//	}
