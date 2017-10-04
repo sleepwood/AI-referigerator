@@ -14,7 +14,7 @@
     <link href="css/mui.poppicker.css" rel="stylesheet" />
 </head>
 <body>
-	<div id="index" class="mui-off-canvas-wrap mui-draggable">
+	<div id="app" class="mui-off-canvas-wrap mui-draggable">
 		<aside id="menu" class="mui-off-canvas-left">
 			<div id="offCanvasSideScroll" class="mui-scroll-wrapper">
 				<div class="mui-scroll">
@@ -23,7 +23,12 @@
 						<h3 class="sub-title">一个简易的冰箱内容管理系统</h3>
 					</div>
 					<ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted">
-						<li class="mui-table-view-cell create-item">
+            <li class="mui-table-view-cell index-link">
+							<a class="mui-navigate-right">
+								首页
+							</a>
+						</li>
+            <li class="mui-table-view-cell create-item">
 							<a class="mui-navigate-right">
 								添加项目
 							</a>
@@ -48,14 +53,15 @@
 		<div class="mui-inner-wrap">
 	 	<header class="mui-bar mui-bar-nav">
 			<a href="#offCanvas" class="mui-icon mui-action-menu mui-icon-bars mui-pull-left"></a>
-	    		<h1 class="mui-center mui-title">电冰箱一览表</h1>
+	    		<h1 class="mui-center mui-title" v-text="title"></h1>
+      <a id="add" class="mui-icon mui-action-menu mui-icon-plus mui-pull-right create-category mui-page"></a>
 		</header>
-		<div id="items" class="mui-content mui-scroll-wrapper">
+		<div id="index" class="mui-content mui-scroll-wrapper">
 			<div class="mui-scroll lists">
-			<div class="item" v-for="cate in data.category">
+			<div class="item" v-for="(cate,index) in data.category">
 				<div class="title" v-text="cate.text"></div>
 	    			<ul class="mui-table-view lists">
-	        			<li class="mui-table-view-cell" v-for="item in data.items">
+	        			<li class="mui-table-view-cell" v-for="item in data.items[index]">
 	        				<div class="mui-slider-handle" v-text="item.name"></div>
 	      				  <div class="mui-slider-left mui-disabled">
 							        <a class="mui-btn mui-btn-red item-delete">删除</a>
@@ -67,60 +73,50 @@
 			</div>
 			</div>
 		</div>
+
+    <div id="modify" class="mui-content mui-scroll-wrapper mui-page">
+    	<div class="mui-content">
+    		<form class="mui-input-group">
+    			<div class="mui-input-row">
+    				<label>物品名称</label>
+    				<input type="text" id="modify-name" class="mui-input-clear" placeholder="请输入物品名称"/>
+    			</div>
+    			<div class="mui-input-row">
+    				<label>物品数量</label>
+    				<div class="mui-numbox" data-numbox-min='1'>
+    					<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+    					<input  class="mui-input-numbox" type="number" id="modify-num"/>
+    					<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+    				</div>
+    			</div>
+    			<div class="mui-input-row">
+    				<label>物品类别</label>
+    				<button id='showUserPicker' class="mui-btn mui-btn-numbox-minus" type='button'></button>
+    			</div>
+    			<div class="mui-button-row">
+    				<button type="button" class="mui-btn mui-btn-primary modify-load">确认</button>&nbsp;&nbsp;
+    				<button type="button" class="mui-btn mui-btn-danger modify-cancel">取消</button>
+    			</div>
+    		</form>
+    	</div>
+    </div>
+
+    <div id="manage" class="mui-content mui-scroll-wrapper mui-page">
+    	<div class="mui-scroll">
+    		<ul id="catelist" class="mui-table-view">
+    	     <li class="mui-table-view-cell" v-for="(cate,index) in data.category">
+    	        <div class="mui-slider-handle" v-text="cate.text"></div>
+    	      	<div class="mui-slider-left mui-disabled">
+    					   <a class="mui-btn mui-btn-red cate-delete">删除</a>
+    					   <a href="#modify" class="mui-btn mui-btn-blue cate-modify">修改</a>
+    				  </div>
+           </li>
+    		</ul>
+    	</div>
+    </div>
+
 		</div>
 	</div>
-<div id="modify" class="mui-page">
-	<div class="mui-navbar-inner mui-bar mui-bar-nav">
-		<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left modify-cancel">
-			<span class="mui-icon mui-icon-left-nav"></span>
-		</button>
-		<h1 class="mui-center mui-title">修改项目</h1>
-	</div>
-	<div class="mui-content">
-		<form class="mui-input-group">
-			<div class="mui-input-row">
-				<label>物品名称</label>
-				<input type="text" id="modify-name" class="mui-input-clear" placeholder="请输入物品名称"/>
-			</div>
-			<div class="mui-input-row">
-				<label>物品数量</label>
-				<div class="mui-numbox" data-numbox-min='1'>
-					<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
-					<input  class="mui-input-numbox" type="number" id="modify-num"/>
-					<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
-				</div>
-			</div>
-			<div class="mui-input-row">
-				<label>物品类别</label>
-				<button id='showUserPicker' class="mui-btn mui-btn-numbox-minus" type='button'></button>
-			</div>
-			<div class="mui-button-row">
-				<button type="button" class="mui-btn mui-btn-primary modify-load">确认</button>&nbsp;&nbsp;
-				<button type="button" class="mui-btn mui-btn-danger modify-cancel">取消</button>
-			</div>
-		</form>
-	</div>
-</div>
-<div id="manage" class="mui-page">
-	<div class="mui-navbar-inner mui-bar mui-bar-nav">
-		<button type="button" class="mui-left mui-action-back mui-btn  mui-btn-link mui-btn-nav mui-pull-left cate-cancel">
-			<span class="mui-icon mui-icon-left-nav"></span>
-		</button>
-		<h1 class="mui-center mui-title">分类管理</h1>
-		<a class="mui-icon mui-action-menu mui-icon-plus mui-pull-right create-category"></a>
-	</div>
-	<div class="mui-scroll">
-		<ul id="catelist" class="mui-table-view">
-	     <li class="mui-table-view-cell" v-for="cate in data.category">
-	        <div class="mui-slider-handle" v-text="cate.text"></div>
-	      	<div class="mui-slider-left mui-disabled">
-					   <a class="mui-btn mui-btn-red cate-delete">删除</a>
-					   <a href="#modify" class="mui-btn mui-btn-blue cate-modify">修改</a>
-				  </div>
-       </li>
-		</ul>
-	</div>
-</div>
 <div id="about" class="mui-page">
 	<div class="mui-navbar-inner mui-bar mui-bar-nav">
 		<a class="mui-icon mui-icon-left-nav about-btn"></a>

@@ -2,11 +2,20 @@
 		var category = [];
 		var userPicker = new mui.PopPicker();
 		var showUserPickerButton = null;
+
+		var app = new Vue({
+			el:'#app',
+			data:{
+				data:data,
+				title:"电冰箱一览表",
+			},
+		});
+
 		(function($, doc){
 			$.ready(function(){
 				//设置菜单和内容滚动
 				$('#offCanvasSideScroll').scroll();
-				$('#items').scroll();
+				$('#index').scroll();
 
 				$.ajax({
 				 	type:"get",
@@ -15,14 +24,14 @@
 				 	dataType:"json",
 				 	success:function(res){
 				 		console.log(res);
-				 		data = res;
-				 		console.log(data)
+				 		app.data = res;
+						console.log(app.data);
 				 		}
 				});
 
 				 $.later(function(){
 				 	//数据调用以初始化选择器
-					category = data.category;
+					category = app.data.category;
 					//初始化结束给选择器赋值
 					userPicker.setData(category);
 					showUserPickerButton = doc.getElementById('showUserPicker');
@@ -35,40 +44,6 @@
 							//return false;
 						});
 					}, false);
-					//初始化列表
-					for(var i = 0;i<category.length;i++){
-						var div = document.createElement('div');//添加一个新的div标签
-						div.className = "item";
-						div.innerHTML = "<div class='title'>"+category[i].text+"</div>";//div里的内容
-						var items = document.getElementsByClassName('mui-scroll');
-						var ul = document.createElement('ul');
-						ul.className = "mui-table-view";
-						div.appendChild(ul);
-						items[1].appendChild(div);
-					}
-					//初始化列表项
-					for(var i = 0;i<category.length;i++){
-						var cate = document.getElementsByClassName('item');
-						for(var j = 0;j<data.items[i].length;j++){
-							var li = document.createElement('li'); //在列表下新建一个项目
-							li.className = 'mui-table-view-cell';
-							li.innerHTML = "<div class='mui-slider-handle'>" + data.items[i][j].name + "</div><div class='mui-slider-left mui-disabled'>" +
-							"<a class='mui-btn mui-btn-red item-delete'>删除</a><a class='mui-btn mui-btn-blue item-modify'>修改</a>" +
-							"</div><span class='mui-badge mui-badge-primary item-num'>" + data.items[i][j].quantity + "</span>";
-							cate[i].lastElementChild.appendChild(li);
-						}
-					}
-
-					//初始化类别操作列表
-					for(var i = 0;i<category.length;i++){
-						var manage = document.getElementById('catelist');
-						var li = document.createElement('li'); //在列表下新建一个项目
-						li.className = 'mui-table-view-cell';
-						li.innerHTML = '<div class="mui-slider-handle" value="'+data.category[i].value+'">' + data.category[i].text + '</div><div class="mui-slider-left mui-disabled">' +
-							'<a class="mui-btn mui-btn-red cate-delete">删除</a><a href="#modify" class="mui-btn mui-btn-blue cate-modify">修改</a>' +
-							'</div>';
-						manage.appendChild(li);
-					}
 				},100);
 			});
 			$.init();
@@ -82,44 +57,83 @@
 		})(mui,document);
 
 		(function($) {
+			//侧滑菜单返回首页
+			$('#menu').on('tap','.index-link',function(event){
+				$('.mui-off-canvas-wrap').offCanvas('close');
+
+				var index = document.getElementById('index');
+				index.className = "mui-content mui-scroll-wrapper";
+				app.title = "电冰箱一览表";
+
+				var modify = document.getElementById('modify');
+				var manage = document.getElementById('manage');
+				var add = document.getElementById('add');
+				add.className = "mui-icon mui-action-menu mui-icon-plus mui-pull-right create-category mui-page";
+				modify.className = "mui-page";
+				manage.className = "mui-page";
+			});
 			//导航栏按钮控制侧滑菜单
 			$('body').on('tap','.mui-icon-bars',function(event){
 				if($('.mui-off-canvas-wrap').offCanvas().isShown()){
-					$('.mui-off-canvas-wrap').offCanvas('close');
+					$('.mui-off-canvas-wrap').offCanvas().close();
 				}
 				else{
+					menu.className = "mui-off-canvas-left";
 					$('.mui-off-canvas-wrap').offCanvas('show');
 				}
 			});
 
 			//导航栏开启关于菜单
 			$('#menu').on('tap','.menu-about',function(event){
-				var items = document.getElementById('index');
-				items.className = 'mui-off-canvas-wrap mui-draggable mui-page';
+				$('.mui-off-canvas-wrap').offCanvas('close');
+
+				var items = document.getElementById('app');
+				items.className = 'mui-page';
+				app.title = "关于应用";
+
 				var about = document.getElementById('about');
 				about.className = 'mui-about';
-
-				mui('.mui-off-canvas-wrap').offCanvas().close();
 			});
 
 			//导航栏关闭关于菜单
 			$('#about').on('tap','.about-btn',function(event){
-				var items = document.getElementById('index');
+				var items = document.getElementById('app');
 				items.className = 'mui-off-canvas-wrap mui-draggable';
+				app.title = "电冰箱一览表";
+
 				var about = document.getElementById('about');
 				about.className = 'mui-page';
 			});
 
-			//添加新的项目
+			//侧滑菜单跳转项目管理
 			$('#menu').on('tap', '.create-item', function(event) {
 				/* 开启修改页面 */
-				var items = document.getElementById('index');
-				items.className = 'mui-off-canvas-wrap mui-draggable mui-page';
 				var modifys = document.getElementById('modify');
-				modifys.className = 'mui-pages';
-				modifys.firstElementChild.lastElementChild.innerHTML = "添加项目";
-				showUserPickerButton.innerHTML = data.category[0].text;
+				modifys.className = "mui-content mui-scroll-wrapper";
+				app.title = "添加项目";
+				showUserPickerButton.innerHTML = app.data.category[0].text;
 
+				var items = document.getElementById('index');
+				items.className = "mui-page";
+				var manage = document.getElementById('manage');
+				manage.className = "mui-page";
+				var add = document.getElementById('add');
+				add.className = "mui-icon mui-action-menu mui-icon-plus mui-pull-right create-category mui-page";
+				mui('.mui-off-canvas-wrap').offCanvas().close();
+			});
+
+			//侧滑菜单跳转类别管理
+			$('#menu').on('tap','.cate-manage',function(){
+				var manage = document.getElementById('manage');
+				manage.className = "mui-content mui-scroll-wrapper";
+				var add = document.getElementById('add');
+				add.className = "mui-icon mui-action-menu mui-icon-plus mui-pull-right create-category";
+				app.title = "类别管理";
+
+				var items = document.getElementById('index');
+				items.className = "mui-page";
+				var modify = document.getElementById('modify');
+				modify.className = "mui-page";
 				mui('.mui-off-canvas-wrap').offCanvas().close();
 			});
 
@@ -130,9 +144,12 @@
 				selectItem = elem.parentNode.parentNode;
 				/* 开启修改页面 */
 				var items = document.getElementById('index');
-				items.className = 'mui-off-canvas-wrap mui-draggable mui-page';
+				items.className = 'mui-content mui-scroll-wrapper mui-page';
 				var modifys = document.getElementById('modify');
-				modifys.className = 'mui-pages';
+				modifys.className = 'mui-off-canvas-wrap mui-pages';
+				app.title = "修改项目";
+
+				$('.mui-off-canvas-wrap').offCanvas().close();
 				setTimeout(function() {
 					$.swipeoutClose(selectItem);
 				}, 0);
@@ -268,18 +285,20 @@
 				num.value = 1;
 				/* 关闭修改界面 */
 				var items = document.getElementById('index');
-				items.className = 'mui-off-canvas-wrap mui-draggable';
+				items.className = 'mui-content mui-scroll-wrapper';
 				var modifys = document.getElementById('modify');
 				modifys.className = 'mui-page';
+				app.title = "电冰箱一览表";
 			});
 
 			//项目编辑页面——取消操作
 			$('#modify').on('tap', '.modify-cancel', function(event) {
 				/* 关闭修改界面 */
 				var items = document.getElementById('index');
-				items.className = 'mui-off-canvas-wrap mui-draggable';
+				items.className = 'mui-content mui-scroll-wrapper';
 				var modifys = document.getElementById('modify');
 				modifys.className = 'mui-page';
+				app.title = "电冰箱一览表";
 			});
 
 			//删除已有项目信息；
@@ -372,18 +391,8 @@
 					})
 			});
 
-			//管理已有类别
-			$('#menu').on('tap','.cate-manage',function(){
-				var manage = document.getElementById('manage');
-				manage.className = 'mui-pages';
-				var items = document.getElementById('index');
-				items.className = 'mui-off-canvas-wrap mui-draggable mui-page';
-
-				$('.mui-off-canvas-wrap').offCanvas().close();
-			});
-
 			//添加新的类别
-			$('#manage').on('tap','.create-category',function(event){
+			$('body').on('tap','.create-category',function(event){
 				mui.prompt('输入新类别的名称','请输入名称','AI-HOME',btnArray,function(e){
 					if(e.index == 0){
 						if(e.value.trim() != ""){
@@ -500,16 +509,6 @@
 				});
 			});
 
-			//管理页面返回
-			$('#manage').on('tap', '.cate-cancel', function(event) {
-				/* 关闭修改界面 */
-				var items = document.getElementById('index');
-				items.className = 'mui-off-canvas-wrap mui-draggable';
-				var manage = document.getElementById('manage');
-				manage.className = 'mui-page';
-
-				refresh();
-			});
 			var btnArray = ['确认', '取消'];
 			var selectItem = null;
 		})(mui);
