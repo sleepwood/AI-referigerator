@@ -1,1 +1,16 @@
-null
+{
+	"ref.html": {
+		"resources": [
+			"js/vue.js",
+			"js/mui.picker.min.js",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/ref.css",
+			"css/mui.min.css",
+			"js/ref.js",
+			"css/mui.poppicker.css",
+			"css/mui.picker.min.css",
+			"img/referigerator.png"
+		]
+	}
+}

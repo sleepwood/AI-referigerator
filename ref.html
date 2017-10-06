@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <script src="js/mui.min.js"></script>
-    <script src="js/mui.picker.min.js"></script>
-    <script src="js/vue.js"></script>
+    <script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/mui.picker.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
     <link href="css/mui.min.css" rel="stylesheet"/>
     <link href="css/ref.css" rel="stylesheet"/>
     <link href="css/mui.picker.min.css" rel="stylesheet" />
@@ -58,16 +58,16 @@
 		</header>
 		<div id="index" class="mui-content mui-scroll-wrapper">
 			<div class="mui-scroll lists">
-			<div class="item" v-for="(cate,index) in data.category">
+			<div class="item" v-for="(cate,index) in cargo.category">
 				<div class="title" v-text="cate.text"></div>
 	    			<ul class="mui-table-view lists">
-	        			<li class="mui-table-view-cell" v-for="item in data.items[index]">
+	        			<li class="mui-table-view-cell" v-for="item in cargo.items[index]">
 	        				<div class="mui-slider-handle" v-text="item.name"></div>
 	      				  <div class="mui-slider-left mui-disabled">
 							        <a class="mui-btn mui-btn-red item-delete">删除</a>
 							        <a class="mui-btn mui-btn-blue item-modify">修改</a>
 						      </div>
-						      <span class="mui-badge mui-badge-primary" v-text="item.quantity"></span>
+						      <span class="mui-badge mui-badge-primary item-num" v-text="item.quantity"></span>
 	        			</li>
 	    			</ul>
 			</div>
@@ -103,9 +103,9 @@
 
     <div id="manage" class="mui-content mui-scroll-wrapper mui-page">
     	<div class="mui-scroll">
-    		<ul id="catelist" class="mui-table-view">
-    	     <li class="mui-table-view-cell" v-for="(cate,index) in data.category">
-    	        <div class="mui-slider-handle" v-text="cate.text"></div>
+    		<ul id="catelist" class="mui-table-view lists">
+    	     <li class="mui-table-view-cell" v-for="(cate,index) in cargo.category">
+    	        <div class="mui-slider-handle" v-text="cate.text" :value="index"></div>
     	      	<div class="mui-slider-left mui-disabled">
     					   <a class="mui-btn mui-btn-red cate-delete">删除</a>
     					   <a href="#modify" class="mui-btn mui-btn-blue cate-modify">修改</a>
@@ -149,5 +149,5 @@
 	</div>
 </div>
 </body>
-<script src="js/ref.js"></script>
+<script src="js/ref.js" type="text/javascript" charset="utf-8"></script>
 </html>

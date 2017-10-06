@@ -63,7 +63,7 @@ function modifyNum(item){
   if(modify){
     data = JSON.stringify(data);
     file.writeFileSync('../../cargo.json',data,'utf8');
-    return "修改成功！已经保存！";
+    return data;
   }
   else{
     return "未找到内容，需要新建参数！";
