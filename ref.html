@@ -7,11 +7,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/mui.picker.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/mescroll.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
     <link href="css/mui.min.css" rel="stylesheet"/>
     <link href="css/ref.css" rel="stylesheet"/>
     <link href="css/mui.picker.min.css" rel="stylesheet" />
     <link href="css/mui.poppicker.css" rel="stylesheet" />
+    <link href="css/mescroll.min.css" rel="stylesheet" />
 </head>
 <body>
 	<div id="app" class="mui-off-canvas-wrap mui-draggable">
@@ -56,8 +58,8 @@
 	    		<h1 class="mui-center mui-title" v-text="title"></h1>
       <a id="add" class="mui-icon mui-action-menu mui-icon-plus mui-pull-right create-category mui-page"></a>
 		</header>
-		<div id="index" class="mui-content mui-scroll-wrapper">
-			<div class="mui-scroll lists">
+		<div id="index" class="mui-content mui-scroll-wrapper mescroll">
+			<div class="mui-scroll">
 			<div class="item" v-for="(cate,index) in cargo.category">
 				<div class="title" v-text="cate.text"></div>
 	    			<ul class="mui-table-view lists">
