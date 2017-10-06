@@ -8,10 +8,33 @@
 			el:'#app',
 			data:{
 				cargo:{},
+				mescroll: null,
 				title:"电冰箱一览表",
 			},
 			created:function(){
 				this.init();
+			},
+			mounted: function() {
+				//创建MeScroll对象,down可以不用配置,因为内部已默认开启下拉刷新,重置列表数据为第一页
+				//解析: 下拉回调默认调用mescroll.resetUpScroll(); 而resetUpScroll会将page.num=1,再执行up.callback,从而实现刷新列表数据为第一页;
+				var self = this;
+				self.mescroll = new MeScroll("index", {
+						down: {
+							callback: downRefresh, //下拉刷新的回调,别写成downCallback(),多了括号就自动执行方法了
+						},
+						up: {
+							use: false //上拉加载的回调
+						},
+						empty:{ //配置列表无任何数据的提示
+							warpId:"index",
+//						icon : "../res/img/mescroll-empty.png" ,
+						  tip : "亲,暂无相关数据哦~" ,
+//						  	btntext : "去逛逛 >" ,
+//						  	btnClick : function() {
+//						  		alert("点击了去逛逛按钮");
+//						  	}
+						}
+					})
 			},
 			methods:{
 				init:function(){
@@ -327,6 +350,10 @@
 	//修改完项目之后对主页面进行更新
 	function refresh(){
 		request("/init",null,'cargo');
+	}
+	function downRefresh(){
+		request("/init",null,'cargo');
+		app.mescroll.endSuccess(app.cargo);
 	}
 	//封装ajax请求 模块化代码
 	function request(urls,data,option){
