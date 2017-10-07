@@ -62,14 +62,14 @@
 			<div class="mui-scroll">
 			<div class="item" v-for="(cate,index) in cargo.category">
 				<div class="title" v-text="cate.text"></div>
-	    			<ul class="mui-table-view lists">
-	        			<li class="mui-table-view-cell" v-for="item in cargo.items[index]">
+	    			<ul class="mui-table-view">
+	        			<li class="mui-table-view-cell" v-for="(item,itdex) in cargo.items[index]">
 	        				<div class="mui-slider-handle" v-text="item.name"></div>
 	      				  <div class="mui-slider-left mui-disabled">
 							        <a class="mui-btn mui-btn-red item-delete">删除</a>
 							        <a class="mui-btn mui-btn-blue item-modify">修改</a>
 						      </div>
-						      <span class="mui-badge mui-badge-primary item-num" v-text="item.quantity"></span>
+						      <span class="mui-badge item-num" :class="numWarning(index,itdex)" v-text="item.quantity"></span>
 	        			</li>
 	    			</ul>
 			</div>

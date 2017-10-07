@@ -20,6 +20,7 @@
 				var self = this;
 				self.mescroll = new MeScroll("index", {
 						down: {
+							auto:false,
 							callback: downRefresh, //下拉刷新的回调,别写成downCallback(),多了括号就自动执行方法了
 						},
 						up: {
@@ -39,8 +40,19 @@
 			methods:{
 				init:function(){
 					request("/init",null,'cargo');
+				},
+				numWarning:function(cate,item){
+					if(this.cargo.items[cate][item].quantity >= 10){
+						return 'mui-badge-success';
+					}
+					else if(this.cargo.items[cate][item].quantity >= 5 & this.cargo.items[cate][item].quantity < 10){
+						return 'mui-badge-warning';
+					}
+					else if(this.cargo.items[cate][item].quantity < 5){
+						return 'mui-badge-danger';
+					}
 				}
-			}
+			},
 		});
 
 		(function($, doc){
@@ -160,14 +172,14 @@
 
 			var selectCate = null; //当前项目的类别
 			//修改已有项目信息
-			$('.lists').on('tap', '.item-modify', function(event) {
+			$('#index').on('tap', '.item-modify', function(event) {
 				var elem = this;
 				selectItem = elem.parentNode.parentNode;
 				/* 开启修改页面 */
 				var items = document.getElementById('index');
 				items.className = 'mui-content mui-scroll-wrapper mui-page';
 				var modifys = document.getElementById('modify');
-				modifys.className = 'mui-off-canvas-wrap mui-pages';
+				modifys.className = 'mui-content mui-scroll-wrapper';
 				app.title = "修改项目";
 
 				setTimeout(function() {
@@ -250,7 +262,7 @@
 			});
 
 			//删除已有项目信息；
-			$('.lists').on('tap', '.item-delete', function(event) {
+			$('#index').on('tap', '.item-delete', function(event) {
 				var li = this.parentNode.parentNode;
 				mui.confirm('确认删除该条记录？', 'AI-HOME', btnArray, function(e) {
 					if(e.index == 0) {
@@ -266,7 +278,7 @@
 			});
 
 			//点击减少数量
-			$('body').on('tap', '.item-num', function(event) {
+			$('#index').on('tap', '.item-num', function(event) {
 				var elem = this;
 				var item = elem.parentNode.firstElementChild.innerHTML;
 				var count = elem.innerHTML;
