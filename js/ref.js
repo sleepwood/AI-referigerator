@@ -9,6 +9,11 @@
 			data:{
 				cargo:{},
 				mescroll: null,
+				warns:{
+					show:true,
+					highbound:10,
+					lowbound:5,
+				},
 				title:"电冰箱一览表",
 			},
 			created:function(){
@@ -42,14 +47,19 @@
 					request("/init",null,'cargo');
 				},
 				numWarning:function(cate,item){
-					if(this.cargo.items[cate][item].quantity >= 10){
-						return 'mui-badge-success';
+					if(this.warns.show){
+						if(this.cargo.items[cate][item].quantity >= this.warns.highbound){
+							return 'mui-badge-success';
+						}
+						else if(this.cargo.items[cate][item].quantity >= this.warns.lowbound & this.cargo.items[cate][item].quantity < this.warns.highbound){
+							return 'mui-badge-warning';
+						}
+						else if(this.cargo.items[cate][item].quantity < this.warns.lowbound){
+							return 'mui-badge-danger';
+						}
 					}
-					else if(this.cargo.items[cate][item].quantity >= 5 & this.cargo.items[cate][item].quantity < 10){
-						return 'mui-badge-warning';
-					}
-					else if(this.cargo.items[cate][item].quantity < 5){
-						return 'mui-badge-danger';
+					else{
+						return 'mui-badge-primary';
 					}
 				}
 			},
@@ -98,26 +108,54 @@
 				}
 			});
 
-			//导航栏开启关于菜单
-			$('#menu').on('tap','.menu-about',function(event){
+			//导航栏开启设置菜单
+			$('#menu').on('tap','.menu-option',function(event){
 				$('.mui-off-canvas-wrap').offCanvas('close');
 
 				var items = document.getElementById('app');
 				items.className = 'mui-page';
-				app.title = "关于应用";
+				app.title = "设置";
 
-				var about = document.getElementById('about');
-				about.className = 'mui-about';
+				var option = document.getElementById('option');
+				option.className = 'mui-pages';
 			});
 
-			//导航栏关闭关于菜单
-			$('#about').on('tap','.about-btn',function(event){
+			//导航栏关闭设置菜单
+			$('#option').on('tap','.option-btn',function(event){
 				var items = document.getElementById('app');
 				items.className = 'mui-off-canvas-wrap mui-draggable';
 				app.title = "电冰箱一览表";
 
+				var option = document.getElementById('option');
+				option.className = 'mui-page';
+			});
+
+			//设置界面进入关于界面
+			$('#option').on('tap','.to-about',function(event){
+				var choise = document.getElementById('choise');
+				var btn = document.getElementsByClassName('option-btn');
+				var title = document.getElementById('option-title');
+
+				btn[0].className = 'mui-icon mui-icon-left-nav about-btn';
+				choise.className = 'mui-scroll-wrapper mui-page';
+				title.innerHTML = "关于";
+				//app.title = "关于";
+
+				var about = document.getElementById('about');
+				about.className = 'mui-about';
+			});
+			//关于界面回退设置界面
+			$('#option').on('tap','.about-btn',function(event){
+				var choise = document.getElementById('choise');
+				var title = document.getElementById('option-title');
+
+				choise.className = 'mui-scroll-wrapper';
+				title.innerHTML = "设置";
+				//app.title = "设置";
+
 				var about = document.getElementById('about');
 				about.className = 'mui-page';
+				this.className = 'mui-icon mui-icon-left-nav option-btn';
 			});
 
 			//侧滑菜单返回首页
@@ -358,6 +396,15 @@
 			var btnArray = ['确认', '取消'];
 			var selectItem = null;
 		})(mui);
+
+	//设置页面 —— 数据警报功能控制
+	document.getElementById("num-switch").addEventListener("toggle",function(event){
+  if(event.detail.isActive){
+		app.warns.show = true;
+  }else{
+		app.warns.show = false;
+  }
+	})
 
 	//修改完项目之后对主页面进行更新
 	function refresh(){
