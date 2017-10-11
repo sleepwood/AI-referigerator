@@ -4,7 +4,9 @@ var create = require('./create');
 var init = require('./init');
 var option = require('./option');
 var cut = require('./delete');
+
 var fs = require('fs');
+var built = JSON.parse(fs.readFileSync("../built.json"));
 var cors = require('cors');
 var app = express();
 
@@ -69,6 +71,6 @@ app.get('/option/general',function(req,res){
   res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});
   res.end(callback);
 })
-app.listen(3000,function(){
-  console.log('app is running at port 3000!');
+app.listen(built.port,function(){
+  console.log('app is running at port '+ built.port);
 })

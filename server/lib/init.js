@@ -1,7 +1,8 @@
 var fs = require('fs');
+var built = JSON.parse(fs.readFileSync("../built.json"));
 
 function initCargo(){
-  var data = fs.readFileSync('../../cargo.json', 'utf-8');//读取数据
+  var data = fs.readFileSync(built.cargo, 'utf-8');//读取数据
 
   data = JSON.parse(data);
 
@@ -25,7 +26,7 @@ function initCargo(){
 }
 
 function initApp(){
-  var option = fs.readFileSync('../../options.json', 'utf-8');//读取数据
+  var option = fs.readFileSync(built.option, 'utf-8');//读取数据
   option = JSON.parse(option);
   var cargo = initCargo();
   cargo = JSON.parse(cargo);

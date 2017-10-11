@@ -266,7 +266,7 @@
 
 				var index = document.getElementById('index');
 				index.className = "mui-content mui-scroll-wrapper";
-				app.title = app.options.title;
+				app.title = app.options.general.title;
 
 				var modify = document.getElementById('modify');
 				var manage = document.getElementById('manage');
@@ -381,7 +381,7 @@
 				items.className = 'mui-content mui-scroll-wrapper';
 				var modifys = document.getElementById('modify');
 				modifys.className = 'mui-page';
-				app.title = app.options.title;
+				app.title = app.options.general.title;
 				refresh();
 			});
 
@@ -398,7 +398,7 @@
 				items.className = 'mui-content mui-scroll-wrapper';
 				var modifys = document.getElementById('modify');
 				modifys.className = 'mui-page';
-				app.title = app.options.title;
+				app.title = app.options.general.title;
 			});
 
 			//删除已有项目信息；

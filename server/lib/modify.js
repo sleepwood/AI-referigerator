@@ -1,8 +1,9 @@
 var file = require('fs');
+var built = JSON.parse(file.readFileSync("../built.json"));
 var create = require('./create');
 
 function modifyItem(item){
-  var data = file.readFileSync('../../cargo.json', 'utf-8');//读取数据
+  var data = file.readFileSync(built.cargo, 'utf-8');//读取数据
   var modify = false;
   if(item.category == "" || item.name == "" || item.quantity == ""){
     return "有参数未定义！";
@@ -28,7 +29,7 @@ function modifyItem(item){
   }
 
   data = JSON.stringify(data);
-  file.writeFileSync('../../cargo.json',data,'utf8');
+  file.writeFileSync(built.cargo,data,'utf8');
 
   if(modify){
     return "修改成功！已经保存！";
@@ -39,7 +40,7 @@ function modifyItem(item){
 }
 
 function modifyNum(item){
-  var data = file.readFileSync('../../cargo.json', 'utf-8');//读取数据
+  var data = file.readFileSync(built.cargo, 'utf-8');//读取数据
   var modify = false;
   if(item.name == ""){
     return "名称未定义！";
@@ -62,7 +63,7 @@ function modifyNum(item){
 
   if(modify){
     data = JSON.stringify(data);
-    file.writeFileSync('../../cargo.json',data,'utf8');
+    file.writeFileSync(built.cargo,data,'utf8');
     return data;
   }
   else{
@@ -71,7 +72,7 @@ function modifyNum(item){
 }
 
 function modifyCate(item){
-  var data = file.readFileSync('../../cargo.json', 'utf-8');//读取数据
+  var data = file.readFileSync(built.cargo, 'utf-8');//读取数据
   if(item.name == "" || item.tag == ""){
     return "有参数未定义！";
   }
@@ -82,7 +83,7 @@ function modifyCate(item){
     data.category[item.tag].text = item.name;
 
     data = JSON.stringify(data);
-    file.writeFileSync('../../cargo.json',data,'utf8');
+    file.writeFileSync(built.cargo,data,'utf8');
     return "修改类别成功！";
   }
   else{

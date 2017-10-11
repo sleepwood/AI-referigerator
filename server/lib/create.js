@@ -1,8 +1,9 @@
 var file = require('fs');
+var built = JSON.parse(file.readFileSync("../built.json"));
 
 function createItem(item,data){
     if(!data){
-      var data = file.readFileSync('../../cargo.json', 'utf-8');//读取数据
+      var data = file.readFileSync(built.cargo, 'utf-8');//读取数据
       data = JSON.parse(data);
     }
 
@@ -15,7 +16,7 @@ function createItem(item,data){
         data.items[i].push(create);
 
         data = JSON.stringify(data);
-        file.writeFileSync('../../cargo.json',data,'utf8');
+        file.writeFileSync(built.cargo,data,'utf8');
         return "创建成功！";
       }
     }
@@ -25,7 +26,7 @@ function createItem(item,data){
 }
 
 function createCate(item){
-  var data = file.readFileSync('../../cargo.json', 'utf-8');//读取数据
+  var data = file.readFileSync(built.cargo, 'utf-8');//读取数据
   data = JSON.parse(data);
 
   var create = new Object();
@@ -36,7 +37,7 @@ function createCate(item){
   data.items.push(new Array());
 
   data = JSON.stringify(data);
-  file.writeFileSync('../../cargo.json',data,'utf8');
+  file.writeFileSync(built.cargo,data,'utf8');
   return "创建成功！";
 }
 

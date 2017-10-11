@@ -1,7 +1,8 @@
 var file = require('fs');
+var built = JSON.parse(file.readFileSync("../built.json"));
 
 function deleteItem(item){
-  var data = file.readFileSync('../../cargo.json', 'utf-8');//读取数据
+  var data = file.readFileSync(built.cargo, 'utf-8');//读取数据
   var modify = false;
   if(item.name == ""){
     return "名称未定义！";
@@ -21,7 +22,7 @@ function deleteItem(item){
 
   if(modify){
     data = JSON.stringify(data);
-    file.writeFileSync('../../cargo.json',data,'utf8');
+    file.writeFileSync(built.cargo,data,'utf8');
     return "修改成功！已经保存！";
   }
   else{
@@ -30,7 +31,7 @@ function deleteItem(item){
 }
 
 function deleteCate(item){
-  var data = file.readFileSync('../../cargo.json', 'utf-8');//读取数据
+  var data = file.readFileSync(built.cargo, 'utf-8');//读取数据
   if(item.tag == ""){
     return "有参数未定义！";
   }
@@ -42,7 +43,7 @@ function deleteCate(item){
     data.items.splice(item.tag,1);
 
     data = JSON.stringify(data);
-    file.writeFileSync('../../cargo.json',data,'utf8');
+    file.writeFileSync(built.cargo,data,'utf8');
     return "删除类别成功！";
   }
   else{
