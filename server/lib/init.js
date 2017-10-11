@@ -24,6 +24,21 @@ function initCargo(){
   return data;
 }
 
+function initApp(){
+  var option = fs.readFileSync('../../options.json', 'utf-8');//读取数据
+  option = JSON.parse(option);
+  var cargo = initCargo();
+  cargo = JSON.parse(cargo);
+
+  var data = new Object();
+  data.cargo = cargo;
+  data.option = option;
+
+  data = JSON.stringify(data);
+  return data;
+}
+
 module.exports = {
   initCargo:initCargo,
+  initApp:initApp,
 }

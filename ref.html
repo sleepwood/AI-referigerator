@@ -52,15 +52,15 @@
 				</div>
 			</div>
 		</aside>
-		<div class="mui-inner-wrap">
+		<div id="content" class="mui-inner-wrap">
 	 	<header class="mui-bar mui-bar-nav">
-			<a href="#offCanvas" class="mui-icon mui-action-menu mui-icon-bars mui-pull-left"></a>
+			<a class="mui-icon mui-action-menu mui-icon-bars mui-pull-left"></a>
 	    		<h1 class="mui-center mui-title" v-text="title"></h1>
       <a id="add" class="mui-icon mui-action-menu mui-icon-plus mui-pull-right create-category mui-page"></a>
 		</header>
 		<div id="index" class="mui-content mui-scroll-wrapper mescroll">
 			<div class="mui-scroll">
-			<div class="item" v-for="(cate,index) in cargo.category">
+			<div class="item" v-for="(cate,index) in cargo.category" v-if="cargo.items[index].length > 0||options.general.showVoid">
 				<div class="title" v-text="cate.text"></div>
 	    			<ul class="mui-table-view">
 	        			<li class="mui-table-view-cell" v-for="(item,itdex) in cargo.items[index]">
@@ -69,7 +69,7 @@
 							        <a class="mui-btn mui-btn-red item-delete">删除</a>
 							        <a class="mui-btn mui-btn-blue item-modify">修改</a>
 						      </div>
-						      <span class="mui-badge item-num" :class="numWarning(index,itdex)" v-text="item.quantity"></span>
+						      <span class="mui-badge item-num" :class="numWarning(item.quantity)" v-text="item.quantity"></span>
 	        			</li>
 	    			</ul>
 			</div>
@@ -96,7 +96,7 @@
     				<button id='showUserPicker' class="mui-btn mui-btn-numbox-minus" type='button'></button>
     			</div>
     			<div class="mui-button-row">
-    				<button type="button" class="mui-btn mui-btn-primary modify-load">确认</button>&nbsp;&nbsp;
+    				<button type="button" class="mui-btn mui-btn-primary modify-load">确认</button>
     				<button type="button" class="mui-btn mui-btn-danger modify-cancel">取消</button>
     			</div>
     		</form>
@@ -116,63 +116,109 @@
     		</ul>
     	</div>
     </div>
-
 		</div>
-	</div>
-<div id="option" class="mui-page">
-	<div class="mui-bar mui-bar-nav">
-		<a class="mui-icon mui-icon-left-nav option-btn"></a>
-		<h1 id="option-title" class="mui-center mui-title" v-text="title">设置</h1>
-	</div>
-	<div class="mui-content">
-    <div id="choise" class="mui-scroll-wrapper">
-      <div class="mui-scroll tops">
-        <ul class="mui-table-view blocks">
-          <li class="mui-table-view-cell">
-            使用数字预警功能
-            <div id="num-switch" class="mui-switch mui-active">
-              <div class="mui-switch-handle"></div>
-            </div>
-          </li>
-          <li class="mui-table-view-cell">
-            显示空类目
-            <div class="mui-switch mui-active">
-              <div class="mui-switch-handle"></div>
-            </div>
-          </li>
-        </ul>
-        <ul class="mui-table-view mui-table-view-chevron blocks">
-          <li class="mui-table-view-cell">
-            <a class="mui-navigate-right to-about">关于应用 <i class="mui-pull-right update">V1.2.0</i></a>
-          </li>
-        </ul>
-      </div>
+
+    <div id="option" class="mui-page">
+    	<div class="mui-bar mui-bar-nav">
+    		<a class="mui-icon mui-icon-left-nav option-btn"></a>
+    		<h1 id="option-title" class="mui-center mui-title" v-text="optitle"></h1>
+    	</div>
+    	<div class="mui-content">
+        <div id="choise" class="mui-scroll-wrapper">
+          <div class="mui-scroll tops">
+            <ul class="mui-table-view mui-table-view-chevron blocks">
+              <li class="mui-table-view-cell">
+                <a class="mui-navigate-right to-general">全局设置</a>
+              </li>
+              <li class="mui-table-view-cell">
+                <a class="mui-navigate-right to-warn">数量预警设置</a>
+              </li>
+            </ul>
+            <ul class="mui-table-view mui-table-view-chevron blocks">
+              <li class="mui-table-view-cell">
+                <a class="mui-navigate-right to-about">关于应用 <i class="mui-pull-right update" v-text="options.general.version"></i></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div id="general" class="mui-page">
+          <ul class="mui-table-view blocks">
+            <li class="mui-table-view-cell">
+              <div class="mui-input-row">
+                <label>应用标题</label>
+                <input type="text" id="app-title" class="mui-input-clear" placeholder="请输入应用标题" :value="title" v-model="title"/>
+              </div>
+            </li>
+          </ul>
+
+          <ul class="mui-table-view blocks">
+            <li class="mui-table-view-cell">
+              显示空类目
+              <div id="void-switch" class="mui-switch mui-active">
+                <div class="mui-switch-handle"></div>
+              </div>
+            </li>
+            <li class="mui-table-view-cell">
+              中文/English
+              <div class="mui-switch mui-active">
+                <div class="mui-switch-handle"></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div id="warn" class="mui-page">
+          <ul class="mui-table-view blocks">
+            <li class="mui-table-view-cell">
+              开启功能
+              <div id="num-switch" class="mui-switch mui-active">
+                <div class="mui-switch-handle"></div>
+              </div>
+            </li>
+          </ul>
+          <ul class="mui-table-view blocks" v-show="options.warns.show">
+            <li class="mui-table-view-cell">
+              <div class="mui-input-row mui-input-range">
+                  <label>选择等级</label>
+                  <input type="range" id='inline-range' :value="options.warns.level" min="2" max="3">
+                  <span v-text="options.warns.level"></span>
+              </div>
+            </li>
+            <li class="mui-table-view-cell" v-for="(level,index) in options.warns.brandary" v-if="index < options.warns.level-1">
+              <div class="mui-input-row">
+        				<label>边界数值</label>
+        				<input type="text" :id="'level-'+index" class="mui-input-clear" placeholder="请输入边界数值" :value="level" v-model.number="options.warns.brandary[index]"/>
+        			</div>
+            </li>
+          </ul>
+        </div>
+        <div id="about" class="mui-page">
+          <p class="about-des">电冰箱管理系统是一个简易的管理冰箱内物品的模块，基于mui制作 使用MangoDB和Node.js 纯属练手 有错误请通过如下方式联系作者</p>
+      			<div class="mui-card" style="margin-bottom: 35px;">
+      				<ul class="mui-table-view">
+      					<li class="mui-table-view-cell">
+      						<a class="mui-navigate-right">
+      							Github
+      						</a>
+      						<span class="mui-badge mui-badge-primary">@sleepwood</span>
+      					</li>
+      					<li class="mui-table-view-cell">
+      						<a class="mui-navigate-right">
+      							weibo
+      						</a>
+      						<span class="mui-badge mui-badge-primary">@abyss_earl</span>
+      					</li>
+      					<li class="mui-table-view-cell">
+      						<a class="mui-navigate-right">
+      							E-mail
+      						</a>
+      						<span class="mui-badge mui-badge-primary">shenyuan1996@126.com</span>
+      					</li>
+      				</ul>
+      			</div>
+        </div>
+    	</div>
     </div>
-    <div id="about" class="mui-page">
-      <p class="about-des">电冰箱管理系统是一个简易的管理冰箱内物品的模块，基于mui制作 使用MangoDB和Node.js 纯属练手 有错误请通过如下方式联系作者</p>
-  			<div class="mui-card" style="margin-bottom: 35px;">
-  				<ul class="mui-table-view">
-  					<li class="mui-table-view-cell">
-  						<a class="mui-navigate-right">
-  							Github
-  						</a>
-  						<span class="mui-badge mui-badge-primary">@sleepwood</span>
-  					</li>
-  					<li class="mui-table-view-cell">
-  						<a class="mui-navigate-right">
-  							weibo
-  						</a>
-  						<span class="mui-badge mui-badge-primary">@abyss_earl</span>
-  					</li>
-  					<li class="mui-table-view-cell">
-  						<a class="mui-navigate-right">
-  							E-mail
-  						</a>
-  						<span class="mui-badge mui-badge-primary">shenyuan1996@126.com</span>
-  					</li>
-  				</ul>
-  			</div>
-    </div>
+
 	</div>
 </div>
 </body>

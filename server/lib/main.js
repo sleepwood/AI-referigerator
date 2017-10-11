@@ -2,6 +2,7 @@ var express = require('express');
 var modify = require('./modify');
 var create = require('./create');
 var init = require('./init');
+var option = require('./option');
 var cut = require('./delete');
 var fs = require('fs');
 var cors = require('cors');
@@ -11,6 +12,11 @@ app.use(cors());
 
 app.get('/init',function(req,res){
   var callback = init.initCargo();
+  res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置response编码为utf-8
+  res.end(callback);
+})
+app.get('/initApp',function(req,res){
+  var callback = init.initApp();
   res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置response编码为utf-8
   res.end(callback);
 })
@@ -53,7 +59,16 @@ app.get('/category/delete',function(req,res){
   res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});
   res.end(callback);
 })
-
+app.get('/option/warn',function(req,res){
+  var callback = option.warn(req.query);
+  res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});
+  res.end(callback);
+})
+app.get('/option/general',function(req,res){
+  var callback = option.general(req.query);
+  res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});
+  res.end(callback);
+})
 app.listen(3000,function(){
   console.log('app is running at port 3000!');
 })

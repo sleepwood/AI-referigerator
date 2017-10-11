@@ -8,7 +8,7 @@ function createItem(item,data){
 
     var create = new Object();
     create.name = item.name;
-    create.quantity = item.quantity;
+    create.quantity = parseInt(item.quantity);
 
     for(var i =0;i<data.category.length;i++){
       if(item.category == data.category[i].text){

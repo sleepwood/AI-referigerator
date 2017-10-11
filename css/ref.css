@@ -7,6 +7,9 @@
 .mui-pages {
 	display: block;
 }
+.mui-input-range .mui-tooltip{
+display: none;
+}
 .blocks {
 	margin-top: 20px;
 }

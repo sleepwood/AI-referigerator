@@ -15,7 +15,7 @@ function modifyItem(item){
       if(item.name == data.items[i][j].name){
         if(item.category == data.category[i].text){
           data.items[i][j].name = item.name;
-          data.items[i][j].quantity = item.quantity;
+          data.items[i][j].quantity = parseInt(item.quantity);
         }
         else{
           data.items[i].splice(j,1);
