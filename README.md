@@ -58,16 +58,16 @@ a simple of MUI list application for refrigerator management.
   vi option.json
 ```
 !你也可以使用 `vim built.json` 命令.
-* `general`: 总览配置.
-  * `version`: 应用版本.
-  * `title`: 应用标题.
-  * `showVoid`: 控制是否显示空的类别.
-  * `language`: 控制显示的语言(开发中).
-  * `night_mode`: 夜间模式(开发中).
-* `warns`: 数量预警设置.
-  * `show`: 显示数量预警设置.
-  * `level`: 数量预警级别.
-  * `brandary`: 每级预警边界值.
+* `general`: 总览配置
+  * `version`: 应用版本
+  * `title`: 应用标题
+  * `showVoid`: 控制是否显示空的类别
+  * `language`: 控制显示的语言(开发中)
+  * `night_mode`: 夜间模式(开发中)
+* `warns`: 数量预警设置
+  * `show`: 显示数量预警设置
+  * `level`: 数量预警级别
+  * `brandary`: 每级预警边界值
 
 ## 功能
 * 物品数量管理
