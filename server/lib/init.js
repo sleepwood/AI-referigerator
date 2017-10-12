@@ -21,7 +21,7 @@ function initCargo(){
   }
 
   data = JSON.stringify(data);
-  fs.writeFileSync('../../cargo.json',data,'utf8');
+  fs.writeFileSync(built.cargo,data,'utf8');
   return data;
 }
 

@@ -511,6 +511,22 @@
 		app.options.general.showVoid = false;
 	}
 	})
+	//设置页面 —— 多语言功能开关
+	document.getElementById("language-switch").addEventListener("toggle",function(event){
+	if(event.detail.isActive){
+		app.options.general.language = "zh";
+	}else{
+		app.options.general.language = "en";
+	}
+	})
+	//设置页面 —— 夜间模式开关
+	document.getElementById("night-switch").addEventListener("toggle",function(event){
+	if(event.detail.isActive){
+		app.options.general.night_mode = true;
+	}else{
+		app.options.general.night_mode = false;
+	}
+	})
 
 	//设置界面 —— 数量预警层级滑块
 	document.getElementById('inline-range').addEventListener('input',function(){
