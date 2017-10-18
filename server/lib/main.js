@@ -1,13 +1,14 @@
 var express = require('express');
+var cors = require('cors');
 var modify = require('./modify');
 var create = require('./create');
 var init = require('./init');
 var option = require('./option');
 var cut = require('./delete');
+var lang = require('./lang');
 
 var fs = require('fs');
 var built = JSON.parse(fs.readFileSync("../built.json"));
-var cors = require('cors');
 var app = express();
 
 app.use(cors());
@@ -20,6 +21,11 @@ app.get('/init',function(req,res){
 app.get('/initApp',function(req,res){
   var callback = init.initApp();
   res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置response编码为utf-8
+  res.end(callback);
+})
+app.get('/lang',function(req,res){
+  res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置response编码为utf-8
+  var callback = lang.initLang()
   res.end(callback);
 })
 app.get('/item/modify',function(req,res){

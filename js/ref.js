@@ -22,6 +22,7 @@
 						brandary:[]
 					}
 				},
+				translation:[],
 				title:"",
 				optitle:"设置"
 			},
@@ -53,6 +54,7 @@
 			},
 			methods:{
 				init:function(){
+					request('/lang',null,'translation');
 					mui.getJSON(
 						url+"/initApp",null,function(res){
 								app.cargo = res.cargo;
@@ -60,6 +62,8 @@
 								console.log(app.options);
 								console.log(app.cargo);
 								app.title = app.options.general.title;
+
+								initOptions();
 						},'json'
 					)
 				},
@@ -495,6 +499,39 @@
 			var selectItem = null;
 		})(mui);
 
+	function initOptions(){//动态设置开关初始值
+		var show = document.getElementById('num-switch');
+		var showVoid = document.getElementById('void-switch');
+		var language = document.getElementById('language-switch');
+		var night = document.getElementById('night-switch');
+
+		if(app.options.warns.show == "true"){
+			show.className = "mui-switch mui-active";
+		}
+		else{
+			show.className = "mui-switch";
+		}
+		if(app.options.general.showVoid == "true"){
+			showVoid.className = "mui-switch mui-active";
+		}
+		else{
+			showVoid.className = "mui-switch";
+		}
+		if(app.options.general.language == "zh"){
+			language.className = "mui-switch mui-active";
+		}
+		else{
+			language.className = "mui-switch";
+		}
+		if(app.options.general.night_mode == "true"){
+			night.className = "mui-switch mui-active";
+			CSSManage("css/night_mode.css");
+		}
+		else{
+			night.className = "mui-switch";
+		}
+	}
+
 	//设置页面 —— 数量预警功能开关
 	document.getElementById("num-switch").addEventListener("toggle",function(event){
   if(event.detail.isActive){
@@ -523,8 +560,10 @@
 	document.getElementById("night-switch").addEventListener("toggle",function(event){
 	if(event.detail.isActive){
 		app.options.general.night_mode = true;
+		CSSManage("css/night_mode.css");
 	}else{
 		app.options.general.night_mode = false;
+		CSSManage("css/night_mode.css");
 	}
 	})
 
@@ -550,4 +589,24 @@
 					console.log(res);
 			},'json'
 		)
+	}
+	function CSSManage(path){
+		var switchs = true;
+		if(!path || path.length === 0){
+			throw new Error('argument "path" is required !');
+		}
+		var head = document.getElementsByTagName('head')[0];
+		var links = document.getElementsByTagName('link');
+		for(var i = 0;i<links.length;i++){
+			if(links[i].href.search(path) != -1){
+				head.removeChild(links[i]);
+				switchs = false;
+			}
+		}
+		if(switchs){
+			var link = document.createElement('link');
+	    link.href = path;
+	    link.rel = 'stylesheet';
+	    head.appendChild(link);
+		}
 	}
