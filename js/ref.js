@@ -3,6 +3,16 @@
 		var showUserPickerButton = null;
 		var url = "http://127.0.0.1:3000";
 
+		i18next.init({
+			lng: 'zh',
+			debug: true,
+			fallbackLng:'zh'
+		})
+
+		i18next.on('languageChanged', () => {
+  		updateContent();
+		});
+
 		mui.init();
 		var app = new Vue({
 			el:'#app',
@@ -63,6 +73,8 @@
 								console.log(app.cargo);
 								app.title = app.options.general.title;
 
+								i18next.changeLanguage(app.options.general.language);
+								initI18n();
 								initOptions();
 						},'json'
 					)
@@ -552,8 +564,10 @@
 	document.getElementById("language-switch").addEventListener("toggle",function(event){
 	if(event.detail.isActive){
 		app.options.general.language = "zh";
+		i18next.changeLanguage("zh");
 	}else{
 		app.options.general.language = "en";
+		i18next.changeLanguage("en");
 	}
 	})
 	//设置页面 —— 夜间模式开关
@@ -590,6 +604,43 @@
 			},'json'
 		)
 	}
+	//i18n初始化
+	function initI18n(){
+		var temp = [];
+		for(var i in app.translation){
+			i18next.addResources(i, 'translation', app.translation[i]);
+			temp.push(i);
+		}
+
+		i18next.languages = temp;
+		updateContent();
+	}
+	//i18n绑定div
+	function updateContent(){
+		document.getElementById('menu_index').innerHTML = i18next.t('index');
+		document.getElementById('menu_item').innerHTML = i18next.t('add_item');
+		document.getElementById('menu_cate').innerHTML = i18next.t('cate_manage');
+		document.getElementById('menu_setting').innerHTML = i18next.t('options');
+		document.getElementById('sub_title').innerHTML = i18next.t('sub_title');
+		document.getElementById('menu_footer').innerHTML = i18next.t('footer');
+		document.getElementById('item_name').innerHTML = i18next.t('item_name');
+		document.getElementById('item_num').innerHTML = i18next.t('item_num');
+		document.getElementById('item_cate').innerHTML = i18next.t('item_cate');
+		document.getElementById('item_submit').innerHTML = i18next.t('submit');
+		document.getElementById('item_cancel').innerHTML = i18next.t('cancel');
+		document.getElementById('option_general').innerHTML = i18next.t('general');
+		document.getElementById('option_warn').innerHTML = i18next.t('warn');
+		document.getElementById('option_about').innerHTML = i18next.t('option_about');
+		document.getElementById('set_title').innerHTML = i18next.t('set_title');
+		document.getElementById('option_about').innerHTML = i18next.t('option_about');
+		document.getElementById('show_Void').innerHTML = i18next.t('show_Void');
+		document.getElementById('language').innerHTML = i18next.t('language');
+		document.getElementById('night_mode').innerHTML = i18next.t('night_mode');
+		document.getElementById('warn_switch').innerHTML = i18next.t('warn_switch');
+		document.getElementById('warn_level').innerHTML = i18next.t('warn_level');
+		document.getElementById('about_content').innerHTML = i18next.t('about');
+	}
+	//夜间模式CSS 切换
 	function CSSManage(path){
 		var switchs = true;
 		if(!path || path.length === 0){
