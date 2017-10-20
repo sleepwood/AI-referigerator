@@ -1,0 +1,71 @@
+#app{
+  background-color: #D9D9D9;
+}
+.mui-content{
+  background-color: #D9D9D9;
+}
+/* 首页－夜间模式 */
+.mui-bar{
+  background-color: #999999;
+}
+.mui-title{
+  color: #404040;
+}
+.title{
+  color: #808080;
+}
+.mui-action-menu{
+  color: #FFFFFF;
+}
+.mui-content > .mui-scroll{
+  background-color: #D9D9D9;
+}
+.item > .mui-table-view{
+  background-color: #B0B0B0;
+}
+.mui-table-view-cell>.mui-slider-handle{
+  background-color: #B0B0B0;
+}
+.mui-slider-handle{
+  color: #666666;
+}
+/* 菜单－夜间模式 */
+.sub-title{
+  color: #CCCCCC;
+}
+.mui-table-view-cell>a:not(.mui-btn){
+  color: #CCCCCC;
+}
+.footer{
+  color: #CCCCCC;
+}
+/* 项目－夜间模式 */
+.mui-input-group{
+  background-color: #666666;
+}
+label{
+  color: #666666;
+}
+/* 类别－夜间模式 */
+#choise{
+  background-color: #D9D9D9;
+}
+.lists{
+    background-color: #B0B0B0;
+}
+/* 设置－夜间模式 */
+.blocks{
+  background-color: #999999;
+}
+.blocks > .mui-table-view-cell{
+  color: #666666;
+}
+#about{
+  background-color: #D9D9D9;
+}
+#general{
+  background-color: #D9D9D9;
+}
+#warn{
+  background-color: #D9D9D9;
+}
