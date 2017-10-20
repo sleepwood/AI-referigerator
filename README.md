@@ -62,8 +62,8 @@ a simple of MUI list application for refrigerator management.
   * `version`: 应用版本
   * `title`: 应用标题
   * `showVoid`: 控制是否显示空的类别
-  * `language`: 控制显示的语言(开发中)
-  * `night_mode`: 夜间模式(开发中)
+  * `language`: 控制显示的语言(汉语／英语)
+  * `night_mode`: 夜间模式
 * `warns`: 数量预警设置
   * `show`: 显示数量预警设置
   * `level`: 数量预警级别
@@ -136,8 +136,8 @@ then open ref.html,it works!
   * `version`: application version.
   * `title`: application title.
   * `showVoid`: control weather show void categories or not.
-  * `language`: control display language (under developing).
-  * `night_mode`: night mode display by CSS change(under developing).
+  * `language`: control display language (English/Chinese).
+  * `night_mode`: night mode display by CSS change.
 * `warns`: number warn setting.
   * `show`: show number warn function.
   * `level`: the level of number warn.
